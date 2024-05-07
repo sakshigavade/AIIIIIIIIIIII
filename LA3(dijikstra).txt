@@ -1,0 +1,44 @@
+import heapq
+
+def dijkstra_mst(graph, source):
+    mst = []
+    visited = set()
+    distances = {vertex: float('inf') for vertex in graph}
+    distances[source] = 0
+    pq = [(0, source, None)]  # (distance, vertex, parent)
+
+    while pq:
+        dist, current_vertex, parent = heapq.heappop(pq)
+        if current_vertex in visited:
+            continue
+        visited.add(current_vertex)
+        if parent is not None:
+            mst.append((parent, current_vertex, dist))
+        for neighbor, weight in graph[current_vertex].items():
+            if neighbor not in visited:
+                heapq.heappush(pq, (weight, neighbor, current_vertex))
+                distances[neighbor] = min(distances[neighbor], weight)
+
+    return mst
+
+
+def take_input():
+    graph = {}
+    num_edges = int(input("Enter the number of edges: "))
+    for i in range(num_edges):
+        start, end, weight = input("Enter start node, end node, and weight separated by space: ").split()
+        weight = int(weight)
+        if start not in graph:
+            graph[start] = {end: weight}
+        else:
+            graph[start][end] = weight
+        if end not in graph:
+            graph[end] = {start: weight}
+        else:
+            graph[end][start] = weight
+    return graph
+
+graph = take_input()
+source_vertex = input("Enter the source vertex: ")
+minimum_spanning_tree = dijkstra_mst(graph, source_vertex)
+print("Minimum Spanning Tree (Dijkstra's Algorithm):", minimum_spanning_tree)
