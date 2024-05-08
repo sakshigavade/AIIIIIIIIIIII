@@ -1,0 +1,55 @@
+class Graph:
+    def __init__(self):
+        self.graph = []
+
+    def add_edge(self, u, v, w):
+        self.graph.append((u, v, w))
+
+    def minimum_spanning_tree(self):
+        self.graph.sort(key=lambda x: x[2])
+        parent, rank, result, total_cost = {}, {}, [], 0
+
+        def find(x):
+            if parent[x] != x: parent[x] = find(parent[x])
+            return parent[x]
+
+        def union(x, y):
+            root_x, root_y = find(x), find(y)
+            if rank[root_x] < rank[root_y]: parent[root_x] = root_y
+            elif rank[root_x] > rank[root_y]: parent[root_y] = root_x
+            else: parent[root_y] = root_x; rank[root_x] += 1
+
+        for u, v, w in self.graph:
+            for vertex in (u, v):
+                if vertex not in parent: parent[vertex], rank[vertex] = vertex, 0
+            if find(u) != find(v):
+                union(u, v); result.append((u, v, w)); total_cost += w
+
+        return result, total_cost
+
+
+def take_input():
+    g = Graph()
+    for _ in range(int(input("Enter the number of edges: "))):
+        u, v, w = input("Enter edge (source destination weight): ").split()
+        g.add_edge(u, v, int(w))
+    return g
+
+
+graph = take_input()
+mst_edges, total_cost = graph.minimum_spanning_tree()
+print("Minimum Spanning Tree edges:")
+for edge in mst_edges: print(edge)
+print("Total cost:", total_cost)
+
+output:
+Enter the number of edges: 4
+Enter edge (source destination weight): A B 4
+Enter edge (source destination weight): A C 2
+Enter edge (source destination weight): B C 5
+Enter edge (source destination weight): C D 3
+Minimum Spanning Tree edges:
+('A', 'C', 2)
+('C', 'D', 3)
+('A', 'B', 4)
+Total cost: 9

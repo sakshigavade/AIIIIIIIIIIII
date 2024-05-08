@@ -1,0 +1,23 @@
+public class Prime {
+    public static void check(Integer num) {
+        Integer flag = 0;
+        Integer j = 2;
+        while (j < num) {
+            if (Math.mod(num, j) == 0) {
+                flag = 1;
+                break;
+            }
+            j++;
+        }
+        if (flag == 0 && num > 1) {
+            System.debug(num + ' is a prime number');
+        } else {
+            System.debug(num + ' is not a prime number');
+        }
+    }
+}
+
+input:
+
+Integer num = 7; // Enter the number you want to check
+Prime.check(num);
