@@ -1,0 +1,17 @@
+public class EO {
+    public static void evenodd(integer n){
+        if(math.mod(n,2)==0){
+            System.debug('even');
+        }
+        else{
+            System.debug('odd');
+        }
+    }
+
+}
+
+
+input:
+
+Integer num = 5; // Enter the number you want to check
+EO.evenodd(num);
